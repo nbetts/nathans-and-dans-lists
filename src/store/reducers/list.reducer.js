@@ -1,16 +1,28 @@
-const initState = {}
+const initState = {
+  updateError: null
+}
 
 const listReducer = (state = initState, action) => {
   switch (action.type) {
     case 'CREATE_LIST':
       return {
         ...state,
-        listError: null
+        updateError: null
       }
     case 'CREATE_LIST_ERROR':
       return {
         ...state,
-        listError: action.errorMessage
+        updateError: action.errorMessage
+      }
+    case 'UPDATE_LIST':
+      return {
+        ...state,
+        updateError: null
+      }
+    case 'UPDATE_LIST_ERROR':
+      return {
+        ...state,
+        updateError: action.errorMessage
       }
     default:
       return state;

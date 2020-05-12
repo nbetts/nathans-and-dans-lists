@@ -31,3 +31,11 @@ body {
 .centered-container {
   height: 80vh;
 }
+
+.list-button {
+  width: 3rem;
+}
+
+.list-title {
+  font-size: 1.5rem;
+}

@@ -1,25 +1,40 @@
-import { createListSchema } from '../schemas/list.schemas'
+import { newListSchema, existingListSchema } from '../schemas/list.schemas'
 
 export const createList = (list) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const { error } = createListSchema.validate(list);
+    const currentTime = Date.now();
+    list.createdAt = currentTime;
+    list.updatedAt = currentTime;
+    list.items = [];
+
+    const { error } = newListSchema.validate(list);
 
     if (error) {
       dispatch({ type: 'CREATE_LIST_ERROR', errorMessage: error.message })
-      return;
+    } else {
+      getFirestore().collection('lists').add(list).then(() => {
+        dispatch({ type: 'CREATE_LIST', list })
+      }).catch((error) => {
+        dispatch({ type: 'CREATE_LIST_ERROR', errorMessage: error.message })
+      })
     }
+  }
+}
 
-    const firestore = getFirestore();
-    const authorId = getState().firebase.auth.uid;
+export const updateList = (list) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    list.updatedAt = Date.now();
 
-    firestore.collection('lists').add({
-      ...list,
-      authorId: authorId,
-      createdAt: new Date()
-    }).then(() => {
-      dispatch({ type: 'CREATE_LIST', list })
-    }).catch((error) => {
-      dispatch({ type: 'CREATE_LIST_ERROR', error })
-    })
+    const { error } = existingListSchema.validate(list);
+
+    if (error) {
+      dispatch({ type: 'UPDATE_LIST_ERROR', errorMessage: error.message })
+    } else {
+      getFirestore().collection('lists').doc(list.id).set(list).then(() => {
+        dispatch({ type: 'UPDATE_LIST', list })
+      }).catch((error) => {
+        dispatch({ type: 'UPDATE_LIST_ERROR', errorMessage: error.message })
+      })
+    }
   }
 }
