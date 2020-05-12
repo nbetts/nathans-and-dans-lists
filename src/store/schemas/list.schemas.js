@@ -53,11 +53,9 @@ export const newListSchema = Joi.object({
     .label('Created at')
     .required()
     .timestamp()
-    .less('now')
     .messages({
       'any.required': 'Created at date is required.',
       'date.format': 'Created at date must be a timestamp.',
-      'date.less': 'Created at date must be in the past.',
     }),
 
   updatedAt: Joi.date()
