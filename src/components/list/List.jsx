@@ -97,10 +97,7 @@ class List extends Component {
       <div className="card">
         <div className="card-body">
           <input type="text" className="text-dark form-control py-4 px-0 border-0 text-truncate mb-1 list-title" placeholder="Title" value={list.title} onChange={(e) => this.updateField('title', e.target.value)} />
-          <input type="text" className="text-dark form-control py-4 px-0 border-0 text-truncate" placeholder="Description" value={list.description} onChange={(e) => this.updateField('description', e.target.value)} />
-
-          <button className={`btn btn-outline-primary my-3 ${newChanges ? 'mr-2' : 'd-none'}`} type="button" onClick={this.undoList}>Undo</button>
-          <button className="btn btn-outline-primary my-3" type="button" onClick={this.saveChanges}>Save Changes</button>
+          <input type="text" className="text-dark form-control py-4 px-0 border-0 text-truncate mb-3" placeholder="Description" value={list.description} onChange={(e) => this.updateField('description', e.target.value)} />
 
           <div>
             { list.items && list.items.map(item => (
@@ -124,6 +121,9 @@ class List extends Component {
               <input type="text" className="form-control py-4 text-truncate" placeholder="Add an item" value={newItemTitle} onChange={(e) => this.setState({ newItemTitle: e.target.value })} />
             </form>
           </div>
+
+          <button className={`btn btn-outline-primary my-3 ${newChanges ? 'mr-2' : 'd-none'}`} type="button" onClick={this.undoList}>Undo</button>
+          <button className={`btn btn-outline-primary my-3 ${newChanges ? '' : 'd-none'}`} type="button" onClick={this.saveChanges}>Save Changes</button>
 
           <p className="card-text mt-3">
             <small className="text-muted">{list.updatedAt ? `Last updated ${moment(list.updatedAt).calendar()}` : null}</small>
